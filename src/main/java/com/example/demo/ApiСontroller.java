@@ -9,21 +9,25 @@ import java.util.List;
 @RestController
 class ApiController {
 
+
     /*
     @GetMapping("books")
     public ResponseEntity<String> getText() {
         return ResponseEntity.ok("Hello text!");
     }
      */
-
+/*
         private List<String> messages = new ArrayList<>();
         @GetMapping("messages")
         public List<String> getMessages
         () {
             return messages;
         }
+
+ */
         /* curl -X POST http://localhost:8080/messages -H 'Content-Type:
        text/plain' -d 'text' */
+    /*
         @PostMapping("messages")
         public void addMessage
         (@RequestBody String text) {
@@ -80,8 +84,53 @@ class ApiController {
             }
         }
     }
+*/
 
+    private List<String> lists = new ArrayList<>();
 
+    //$ curl -X POST http://localhost:8080/lists -H 'Content-Type: text/plain' -d 'text'
+    @PostMapping("lists")
+    public void addMessage
+            (@RequestBody String text) {
+        lists.add(text);
+    }
+
+    //$ curl -X DELETE http://localhost:8080/lists/0
+    @DeleteMapping("lists/{index}")
+    public void deleteList
+            (@PathVariable("index") Integer index) {
+        lists.remove((int) index);
+    }
+
+    @GetMapping("lists")
+    public List<String> getList() {
+        return lists;
+    }
+    //curl -X PUT http://localhost:8080/lists/0 -H 'Content-Type: text/plain' -d 'text'
+    @PutMapping("lists/{index}")
+    public void updateList(
+            @PathVariable("index") Integer i,
+            @RequestBody String message) {
+        lists.remove((int) i);
+        lists.add(i, message);
+    }
+
+    @GetMapping("lists/count")
+    public Integer getListscount() {
+        return (lists.size());
+    }
+    //curl -X DELETE http://localhost:8080/lists -H 'Content-Type: text/plain' -d 'text'
+    @DeleteMapping("lists")
+    public void deleteallLists() {
+        for (int i = 0; i <lists.size(); i++) {
+            lists.remove(i);
+        }
+    }
+    //curl -X GET http://localhost:8080/lists/0
+    @GetMapping("lists/{index}")
+    public String getList(@PathVariable("index") Integer index) {
+        return lists.get(index);
+    }
 
 
 
